@@ -1,14 +1,14 @@
 {
-  "name": "react-simple-boilerplate",
+  "name": "ChattyApp",
   "version": "1.0.0",
-  "description": "Simple and lightweight Boilerplate for ReactJS projects",
+  "description": "ChattyApp built with ReactJS and Sockets",
   "scripts": {
     "lint": "eslint --ext .jsx,.js src",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/noahlotzer/react-simple-boilerplate.git"
+    "url": "https://github.com/chaodonghu/ChattyApp.git"
   },
   "keywords": [
     "react",
@@ -45,7 +45,7 @@
     "webpack-dev-server": "2.3.0"
   },
   "dependencies": {
-    "react": "15.4.2",
-    "react-dom": "15.4.2"
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   }
 }
