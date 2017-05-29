@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
-var ReactDOM = require('react-dom');
+import MessageList from './MessageList.jsx';
+import ChatBar from './ChatBar.jsx';
 
 class App extends Component {
   render() {
+    console.log("Rendering <App/>");
     return (
-      <h1>Swag :)</h1>
+      <div>
+        <nav className="navbar">
+          <a href="/" className="navbar-brand">Chatty</a>
+        </nav>
+        <MessageList />
+        <ChatBar />
+      </div>
     );
   }
 }
+
 export default App;
