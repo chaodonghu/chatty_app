@@ -5,12 +5,11 @@ class Message extends Component {
     console.log("Rendering <Message />");
     return (
       <div>
-        <div className="message">
-          <span className="message-username">Anonymous1</span>
-          <span className="message-content">I won't be impressed with technology until I can download food.</span>
+        <div className="message" key={this.props.index}>
+          <span className="message-username">{this.props.chattyUsername}</span>
+          <span className="message-content">{this.props.chattyMessage}</span>
         </div>
         <div className="message system">
-          Anonymous1 changed their name to nomnom.
         </div>
       </div>
     );
