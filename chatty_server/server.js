@@ -39,6 +39,12 @@ wss.on('connection', (client) => {
     // console.log(`User ${message.username} said ${message.content}`);
   });
 
+  client.on('message', (rawMessage) => {
+    const message = JSON.parse(rawMessage);
+    // console.log(message);
+    console.log(`User ${message.message.username} said ${message.message.content}`);
+  })
+
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   client.on('close', () => console.log('Client disconnected'));
 });

@@ -15,7 +15,10 @@ class App extends Component {
     this.state = chattyData;
     this.handleInsertMessage = this.handleInsertMessage.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+<<<<<<< HEAD
     this.componentDidMount = this.componentDidMount.bind(this);
+=======
+>>>>>>> 2d676cb368725a30577780c6dccde7a9601df4f4
 
     // Connects React app to WebSocket server
     this.connection = new WebSocket("ws://localhost:3001");
@@ -35,9 +38,8 @@ handleInsertMessage = (message) => {
     const newMessage = {id: length, username: message.username, content: message.content};
     // const messages = this.state.messages.concat(newMessage);
     // this.setState({messages: messages});
-
     // Messages going back and forth through the WebSocket connection
-    this.sendMessage({message: newMessage});
+    this.sendMessage({message: message});
   }
 
   // in App.jsx
