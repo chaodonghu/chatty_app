@@ -15,6 +15,7 @@ class App extends Component {
     this.state = chattyData;
     this.handleInsertMessage = this.handleInsertMessage.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
 
     // Connects React app to WebSocket server
     this.connection = new WebSocket("ws://localhost:3001");
@@ -32,26 +33,22 @@ handleInsertMessage = (message) => {
     let length = this.state.messages.length + 1;
 
     const newMessage = {id: length, username: message.username, content: message.content};
-    const messages = this.state.messages.concat(newMessage);
-    console.log(message);
-    this.setState({messages: messages});
+    // const messages = this.state.messages.concat(newMessage);
+    // this.setState({messages: messages});
+
     // Messages going back and forth through the WebSocket connection
-    this.sendMessage({message: message});
+    this.sendMessage({message: newMessage});
   }
 
   // in App.jsx
   componentDidMount() {
-    console.log("componentDidMount <App />");
-    // console.log('this is the length of the inputted data', chattyData.messages.length);
-    setTimeout(() => {
-      // console.log("Simulating incoming message");
-      // Add a new message to the list of messages in the data store
-      const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-      const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({messages: messages})
-    }, 3000);
+    this.connection.onmessage = (event) => {
+      const serverData = JSON.parse(event.data);
+      console.log('Data coming back from server to client', serverData);
+      const serverDataArray = [];
+      serverDataArray.push(serverData.message);
+      this.setState({messages: this.state.messages.concat(serverDataArray)})
+    }
   }
 
   render() {
