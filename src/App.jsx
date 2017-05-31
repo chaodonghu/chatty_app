@@ -20,6 +20,7 @@ const chattyData = {
   ]
 }
 
+content = ''
 class App extends Component {
   constructor(props) {
     super(props);
