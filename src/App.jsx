@@ -5,7 +5,9 @@ import ChatBar from './ChatBar.jsx';
 
 // Define application data
 const chattyData = {
-  currentUser: {username: "Dong"}, // optional, if currentuser is not defined, it means the user is Anonymous
+  currentUser: {
+    username: "Dong"
+  }, // optional, if currentuser is not defined, it means the user is Anonymous
   messages: [] //messages coming from the server will be stored here as they arrive
 }
 
@@ -24,15 +26,19 @@ class App extends Component {
     }
   }
 
-sendMessage(message) {
-  this.connection.send(JSON.stringify(message));
-  console.log('Message sent from client to server');
-}
+  sendMessage(message) {
+    this.connection.send(JSON.stringify(message));
+    console.log('Message sent from client to server');
+  }
 
-handleInsertMessage = (message) => {
+  handleInsertMessage = (message) => {
     let length = this.state.messages.length + 1;
 
-    const newMessage = {id: length, username: message.username, content: message.content};
+    const newMessage = {
+      id: length,
+      username: message.username,
+      content: message.content
+    };
     // const messages = this.state.messages.concat(newMessage);
     // this.setState({messages: messages});
     // Messages going back and forth through the WebSocket connection

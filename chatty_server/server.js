@@ -32,8 +32,8 @@ wss.on('connection', (client) => {
   client.on('message', (rawMessage) => {
     const receivedMessage = JSON.parse(rawMessage);
     console.log('Received message:', receivedMessage);
-    // receivedMessage.message['id'] = uuidV1();
-    // console.log('Id has been addded to messsage: ', receivedMessage);
+    receivedMessage.message['id'] = uuidV1();
+    console.log('Id has been addded to messsage: ', receivedMessage);
     wss.broadcast(receivedMessage);
 
     // console.log(`User ${message.username} said ${message.content}`);
