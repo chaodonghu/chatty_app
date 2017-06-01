@@ -6,14 +6,25 @@ class ChatBar extends Component {
 
     //Get username
     this.state = {
-      username: this.props.currentUser.username,
+      username: this.props.currentUser,
       content: ''
     }
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleNameSubmit = this.handleNameSubmit.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleContentSubmit.bind(this);
+  }
+
+  handleContentChange = (event) => {
+    this.setState({content: event.target.value});
+  }
+
+  handleContentSubmit = (event) => {
+    if (event.key === "Enter") {
+      this.props.insertMessage(this.state);
+      this.setState({content: ''})
+    }
   }
 
   handleNameChange = (event) => {
@@ -22,19 +33,8 @@ class ChatBar extends Component {
 
   handleNameSubmit = (event) => {
     if (event.key === "Enter") {
-      this.props.currentUser(this.state);
+      this.props.updateUser(this.state.username);
       this.setState({username: event.target.value});
-    }
-  }
-
-  handleContentChange = (event) => {
-    this.setState({content: event.target.value});
-  }
-
-  handleSubmit = (event) => {
-    if (event.key === "Enter") {
-      this.props.InsertMessage(this.state);
-      this.setState({content: ''})
     }
   }
 
@@ -44,8 +44,10 @@ class ChatBar extends Component {
 
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" type="text" value={this.state.username} onChange={this.handleNameChange} onKeyPress={this.handleNameSubmit}/>
-        <input className="chatbar-message" type="text" placeholder="Type a message and hit ENTER" value={this.state.content} onChange={this.handleContentChange} onKeyPress={this.handleSubmit}/>
+        <input className="chatbar-username" type="text" value={this.state.username} onChange={this.handleNameChange}
+          onKeyPress={this.handleNameSubmit}
+        />
+        <input className="chatbar-message" type="text" placeholder="Type a message and hit ENTER" value={this.state.content} onChange={this.handleContentChange} onKeyPress={this.handleContentSubmit}/>
       </footer>
     );
   }

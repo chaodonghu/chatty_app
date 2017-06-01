@@ -4,14 +4,10 @@ class Message extends Component {
   render() {
     console.log("Rendering <Message />");
     return (
-      <div>
-        <div className="message" key={this.props.index}>
-          <span className="message-username">{this.props.chattyUsername}</span>
-          <span className="message-content">{this.props.chattyMessage}</span>
+        <div className="message" key={this.props.id}>
+          <span className="message-username">{this.props.username}</span>
+          <span className="message-content">{this.props.content}</span>
         </div>
-        <div className="message system">
-        </div>
-      </div>
     );
   }
 }

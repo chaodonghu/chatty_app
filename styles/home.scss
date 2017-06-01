@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
+@import url("https://fonts.googleapis.com/css?family=OpenSans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
 
 h1 {
@@ -77,6 +77,10 @@ body {
   position: fixed;
   right: 0;
   top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navbar-brand {
@@ -88,5 +92,14 @@ body {
   height: 60px;
   line-height: 60px;
   padding: 0 10px;
+  text-decoration: none;
+}
+
+.navbar-counter {
+  color: inherit;
+  color: inherit;
+  display: block;
+  font-weight: 200;
+  font-size: 14px;
   text-decoration: none;
 }

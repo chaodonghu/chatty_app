@@ -3,7 +3,7 @@
 const express = require('express');
 const SocketServer = require('ws').Server;
 // Generate a V1 UUID
-const uuidV1 = require('uuid/v1');
+const uuid = require('node-uuid');
 
 // Set the port to 3001
 const PORT = 3001;
@@ -22,28 +22,43 @@ const wss = new SocketServer({server});
 wss.on('connection', (client) => {
   console.log('Client connected');
 
-  wss.broadcast = (data) => {
-    wss.clients.forEach((client) => {
-      client.send(JSON.stringify(data));
-      console.log('ID, Username and Content is being sent to client from servers')
-    });
-  };
-
   client.on('message', (rawMessage) => {
-    const receivedMessage = JSON.parse(rawMessage);
-    console.log('Received message:', receivedMessage);
-    receivedMessage.message['id'] = uuidV1();
-    console.log('Id has been addded to messsage: ', receivedMessage);
-    wss.broadcast(receivedMessage);
-
-    // console.log(`User ${message.username} said ${message.content}`);
+    let msg = JSON.parse(rawMessage);
+    switch(msg.type) {
+      case "postNotification":
+      let newNotification = {
+        type: "incomingNotification",
+        data: {
+          id: uuid.v1(),
+          prevUserName: msg.data.prevUserName,
+          newUserName: msg.data.newUserName
+        }
+      }
+      wss.clients.forEach((client) => {
+        if(client.readyState === require('ws').OPEN) {
+          client.send(JSON.stringify(newNotification));
+        }
+      })
+      break;
+      case "postMessage":
+      let newMessage = {
+        type: "incomingMessage",
+        data: {
+          id: uuid.v1(),
+          username: msg.data.username,
+          content: msg.data.content
+        }
+      };
+      wss.clients.forEach((client) => {
+        if(client.readyState === require('ws').OPEN) {
+          client.send(JSON.stringify(newMessage));
+        }
+      });
+      break;
+      default:
+      console.error("This is an unknown event type: " + serverData.type);
+    }
   });
-
-  client.on('message', (rawMessage) => {
-    const message = JSON.parse(rawMessage);
-    // console.log(message);
-    console.log(`User ${message.message.username} said ${message.message.content}`);
-  })
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   client.on('close', () => console.log('Client disconnected'));
