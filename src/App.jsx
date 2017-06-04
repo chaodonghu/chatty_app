@@ -12,13 +12,9 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: { username: "Dong"}, // optional, if currentuser is not defined, it means the user is Anonymous
-      messages: [], //messages coming from the server will be stored here as they arrive
+      messages: [], //messages coming from the server will be stored in an empty array as the default state as they arrive
     };
   }
-
-  // this.handleInsertMessage = this.handleInsertMessage.bind(this);
-  // // this.sendMessage = this.sendMessage.bind(this);
-  // this.componentDidMount = this.componentDidMount.bind(this);
 
   // in App.jsx
   componentDidMount() {
@@ -63,6 +59,8 @@ class App extends Component {
       </div>
     );
   }
+
+  // Helper functions
 
   handleUpdateUser = (username) => {
     const newMessage = {
