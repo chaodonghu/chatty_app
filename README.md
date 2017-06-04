@@ -25,6 +25,11 @@ npm install
 npm start
 open http://localhost:3000
 ```
+3. Navigate to chatty_server directory in another terminal and start the chatty server on PORT 3001
+```
+cd chatty_server
+node server.js http://localhost:3001
+```
 
 ### Dependencies
 
