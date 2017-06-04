@@ -19,6 +19,10 @@ class App extends Component {
   // in App.jsx
   componentDidMount() {
     console.log("componentDidMount <App />");
+    this.connectSocket.onopen = (event) => {
+      this.connectSocket.send(JSON.stringify({ type: "postColor"}));
+    }
+
     this.connectSocket.onmessage = (event) => {
       console.log('Received: ', event.data);
       const serverData = JSON.parse(event.data);

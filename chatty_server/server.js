@@ -19,6 +19,9 @@ const wss = new SocketServer({server});
 // Start user counter at 0
 let counter = 0;
 
+// Set total number of possible user colors to 5.
+let colorTotal = 5;
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
@@ -29,11 +32,15 @@ wss.on('connection', (client) => {
   client.on('message', (rawMessage) => {
     let msg = JSON.parse(rawMessage);
     switch (msg.type) {
+      case "postColor":
+      // Assign a random color out of 5 preset colors to user
+      client.color = `name-${Math.floor(Math.random() * colorTotal + 1)}`;
+      break;
       case "postNotification":
         _postNotification(msg);
         break;
       case "postMessage":
-        _postMessage(msg);
+        _postMessage(msg, client.color);
         break;
       default:
         console.error("This is an unknown event type: " + msg.type);
@@ -88,7 +95,7 @@ _postNotification = (msg) => {
   _broadcastmsg(JSON.stringify(newNotification));
 }
 
-_postMessage = (msg) => {
+_postMessage = (msg, color) => {
   let newMessage = {
     type: "incomingMessage",
     data: {

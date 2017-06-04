@@ -8,7 +8,7 @@ class MessageList extends Component {
       <div className="messages">
         {this.props.messages.map((message) => {
             if (message.username) {
-              return (<Message key={message.id.toString()} username={message.username} content={message.content}/>);
+              return (<Message key={message.id.toString()} color={message.color} username={message.username} content={message.content}/>);
             } else {
               return (<div key={message.id} className="message system">User {message.prevUserName} changed their name to {message.newUserName}</div>);
             }
