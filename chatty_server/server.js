@@ -27,6 +27,8 @@ let colorTotal = 5;
 // the ws parameter in the callback.
 wss.on('connection', (client) => {
   console.log('Client connected');
+
+  // Once a user is connected, counter is incremented and broadcast to all online users
   _incrementUser();
 
   client.on('message', (rawMessage) => {
@@ -50,13 +52,14 @@ wss.on('connection', (client) => {
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   client.on('close', () => {
     console.log('Client disconnected');
+    // Once a user is disconnect, counter is decremented and broadcast to all online users
     _decrementUser();
   });
 });
 
 // ************************ Helper Functions ************************ //
 
-// Broadcast the message to all clients
+// Function: Broadcast the message to all clients
 _broadcastmsg = (message) => {
   wss.clients.forEach((client) => {
     if (client.readyState === require('ws').OPEN) {
@@ -65,6 +68,7 @@ _broadcastmsg = (message) => {
   });
 }
 
+// Function: Once a user is connected, counter is incremented and broadcast to all online users
 _incrementUser = () => {
   counter++;
   let newCount = {
@@ -74,6 +78,7 @@ _incrementUser = () => {
   _broadcastmsg(JSON.stringify(newCount));
 }
 
+// Function: Once a user is disconnected, counter is decremented and broadcast to all online users
 _decrementUser = () => {
   counter--;
   let newCount = {
@@ -83,6 +88,7 @@ _decrementUser = () => {
   _broadcastmsg(JSON.stringify(newCount));
 }
 
+// Function: Notifies all users that a user has changed their username
 _postNotification = (msg) => {
   let newNotification = {
     type: "incomingNotification",
@@ -95,14 +101,46 @@ _postNotification = (msg) => {
   _broadcastmsg(JSON.stringify(newNotification));
 }
 
+// Function: post message with user assigned color,
+// enables users to send images and gifs.
 _postMessage = (msg, color) => {
+  // Find parts of the entered message that begins with
+  // either http:// or https://, and ends with .jpg or .png, or .gif
+  let regExp = new RegExp(/https?:\/{2}\S+?\.(jpg|png|gif)/gi);
+  let urls = msg.data.content.match(regExp);
+  console.log('The urls', urls);
+  // Replaces all html characers with their associated entities
+  msg.data.content = msg.data.content.replace(/[&<>"]/g, (tag) => {
+    let chars = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&#34;',
+      "'": '&#39;',
+      ' ': '$nbsp;'
+    };
+    return chars[tag] || tag;
+  });
   let newMessage = {
     type: "incomingMessage",
     data: {
       id: uuid.v1(),
       username: msg.data.username,
-      content: msg.data.content
+      // content: msg.data.content,
+      color: color,
+      content: urls ? _insertImage(msg.data.content, urls) : msg.data.content
     }
   };
   _broadcastmsg(JSON.stringify(newMessage));
+}
+
+// Function: converts and wraps url in an image tag,
+// and places it in the message content
+_insertImage = (content, urls) => {
+  let regExp = new RegExp(urls.join('|'), 'gi');
+  return content.replace(regExp, (chunk) => {
+    if (chunk.match(regExp)) {
+      return `<img src="${chunk}">`;
+    }
+  })
 }

@@ -6,7 +6,7 @@ class Message extends Component {
     return (
         <div className="message" key={this.props.id}>
           <span className={`message-username ${this.props.color}`}>{this.props.username}</span>
-          <span className="message-content">{this.props.content}</span>
+          <span className="message-content" dangerouslySetInnerHTML={{__html: this.props.content}}></span>
         </div>
     );
   }
