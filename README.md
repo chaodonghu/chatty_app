@@ -1,6 +1,6 @@
 # Chatty-App
 
-An application that allows users to have live conversations. Built with React, WebSockets and Express.
+An application that facilitates real-time conversations, Chatty enables users to send messages instantly broadcasted to all connected participants. Users can also share images by pasting URLs ending with jpg, png, or gif.. Built with React, WebSockets and Express.
 
 ## Project Screenshots
 ![](./assets/chatty.gif)
